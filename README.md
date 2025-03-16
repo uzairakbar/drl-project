@@ -8,6 +8,13 @@
 | Yitong Li   | 903537230  | yli3277@gatech.edu     |
 | Ziwon Yoon  | 903934417  | zyoon6@gatech.edu      |
 
+## Artifacts
+
+https://github.com/user-attachments/assets/23c254a8-a54d-428d-9b27-b3d871db6589
+
+| Reward graph during training    | Evaluaiton against baselines    |
+| :---------------------: | :------------------------------------: |
+| ![State Representation](artifacts/learning.png) | ![Linear Value Function Approximation](artifacts/baseline_comparison.png) |
 
 ## Setup
 Clone this repository.
@@ -33,15 +40,8 @@ wget "$dataset_path" -O HalfCheetah-v2_25.pkl
 ```
 
 ### Environment
-#### Python `venv`
-Setup the python virtual environemnt (requires python `3.10.14`).
-```bash
-python -m venv .env
-source .env/bin/activate
-pip install -r requirements.txt
-export PYTORCH_ENABLE_MPS_FALLBACK=1
-```
-Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as this environment.
+#### Google colab (recommended)
+You can also simply try our notebook on [google colab](https://colab.research.google.com/drive/19Qi_-Uzw4efC5ORLATTzGSYd_8hTI2jI?usp=sharing).
 
 #### Conda environment
 Install dependencies with `conda`.
@@ -52,7 +52,18 @@ export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
 Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as the environment `gail`.
 
-#### Google colab (recommended)
+#### Python `venv`
+Setup the python virtual environemnt (requires python `3.10.14`).
+```bash
+python -m venv .env
+source .env/bin/activate
+pip install -r requirements.txt
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+```
+Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as this environment.
 
-You can also simply try our notebook on [google colab](https://colab.research.google.com/drive/19Qi_-Uzw4efC5ORLATTzGSYd_8hTI2jI?usp=sharing).
+### Tensorboard
+Launch tensorboard as follows.
+```bash
 
+```
