@@ -1,0 +1,17 @@
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple
+numpy
+matplotlib
+seaborn
+torch
+standard-imghdr
+tensorboard>=2.4.1
+gymnasium
+mujoco-py
+'gymnasium[mujoco]'
+moviepy
+loguru
+enlighten
+scikit-image
+jupyter
+jupyterlab
