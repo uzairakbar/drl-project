@@ -65,5 +65,5 @@ Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as 
 ### Tensorboard
 Launch tensorboard as follows.
 ```bash
-
+tensorboard --logdir runs
 ```
