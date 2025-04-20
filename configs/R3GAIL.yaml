@@ -1,6 +1,6 @@
 seed: 0
 env_name: Ant-v5
-epochs: 1000
+epochs: 5000
 gamma: 0.99
 n_envs: 64 # WARNING, the following 3 values must be the same in the current impl
 n_eval_envs: 64

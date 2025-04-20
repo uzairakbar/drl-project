@@ -21,17 +21,44 @@ from loguru import logger
 from copy import deepcopy
 
 # === Load Config from YAML ===
-parser = argparse.ArgumentParser()
-parser.add_argument("--config", type=str, default="config.yaml")
-args = parser.parse_args()
+pre_parser = argparse.ArgumentParser(add_help=False)
+pre_parser.add_argument("--config", type=str, default="config.yaml")
 
-with open(args.config, "r") as f:
+
+pre_args, remaining = pre_parser.parse_known_args()
+
+# 2) Load defaults from the chosen YAML
+with open(pre_args.config, "r") as f:
     cfg = yaml.safe_load(f)
 
+parser = argparse.ArgumentParser(
+    # include the config flag in the help
+    parents=[pre_parser],
+
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter
+)
+parser.add_argument("--env_name",    type=str,   default=cfg["env_name"])
+parser.add_argument("--learning_rate", type=float, default=cfg["learning_rate"])
+parser.add_argument("--log_dir",  type=str,   default=cfg["log_dir"])
+parser.add_argument("--seed", type=int,   default=cfg["seed"])
+parser.add_argument("--gamma_d",  type=float,   default=cfg["gamma_d"])
+parser.add_argument("--gamma_g", type=float, default=cfg["gamma_g"])
+# … add any other overridable keys …
+
+# 4) Parse everything
+args = parser.parse_args()
+
+# === Load Expert Dataset ===
+cfg["env_name"] = args.env_name
+cfg["learning_rate"] = args.learning_rate
+cfg["log_dir"] = args.log_dir
+cfg["seed"] = args.seed
+cfg["gamma_g"] = args.gamma_g
+cfg["gamma_d"] = args.gamma_d
 wandb.init(
     entity='peterchenyipu',
     project="cs8803-drl-project",
-    name=f'{cfg["env_name"]}_{cfg["algorithm"]}_seed_{cfg["seed"]}',
+    name=f'{cfg["env_name"]}_{cfg["algorithm"]}_gamma-{cfg["gamma_d"]}_seed{cfg["seed"]}',
     config=cfg)
 config = wandb.config
 
@@ -766,7 +793,7 @@ class BCPolicy(nn.Module):
 
 # begin the training logic
 print(f"expert_data/{ENV_NAME}_25.pkl")
-with open(f".expert_data/{ENV_NAME}_25.pkl", 'rb') as f:
+with open(f"expert_data/{ENV_NAME}_25.pkl", 'rb') as f:
     expert_dataset = pickle.load(f)
 
 num_expert_trajs = 2
