@@ -67,6 +67,7 @@ ALGORITHM = config.algorithm
 LOG_DIR = config.log_dir
 GAMMA_D = config.gamma_d if "gamma_d" in config else None
 GAMMA_G = config.gamma_g if "gamma_g" in config else None
+EVAL_EVERY = config.eval_every if "eval_every" in config else 100
 
 # === Helper ===
 def make_network(in_dim, out_dim, hidden_dim=HIDDEN_DIM, device=device):
@@ -798,7 +799,7 @@ if ALGORITHM == "R3GAIL":
         gail.update(i)
         epochs_pbar.update()
         wandb.log({"epoch": i}, step=i)
-        if i % 10 == 0:
+        if i % EVAL_EVERY == 0 or i == EPOCHS - 1:
             [mean, std] = gail.evaluate_policy(i)
             returns_by_epoch = np.append(returns_by_epoch, np.array([[i, mean, std]]), axis=0)
     
@@ -817,7 +818,8 @@ elif ALGORITHM == "GAIL":
         gail.rollout(i)
         gail.update(i)
         epochs_pbar.update()
-        if i%10 == 0:
+        wandb.log({"epoch": i}, step=i)
+        if i % EVAL_EVERY == 0 or i == EPOCHS - 1:
             [mean, std] = gail.evaluate_policy(i)
             returns_by_epoch = np.append(returns_by_epoch, np.array([[i, mean, std]]), axis=0)
     # TODO: do we need to save the model?
@@ -834,7 +836,8 @@ elif ALGORITHM == "BC_Det":
     for i in range(EPOCHS):
         bc_det.update(i)
         epochs_pbar.update()
-        if i%10 == 0:
+        wandb.log({"epoch": i}, step=i)
+        if i % EVAL_EVERY == 0 or i == EPOCHS - 1:
             [mean, std] = bc_det.evaluate_policy(i)
             returns_by_epoch = np.append(returns_by_epoch, np.array([[i, mean, std]]), axis=0)
 
@@ -851,6 +854,7 @@ elif ALGORITHM == "BC_Stoch":
     for i in range(EPOCHS):
         bc_stoch.update(i)
         epochs_pbar.update()
-        if i%10 == 0:
+        wandb.log({"epoch": i}, step=i)
+        if i % EVAL_EVERY == 0 or i == EPOCHS - 1:
             [mean, std] = bc_stoch.evaluate_policy(i)
             returns_by_epoch = np.append(returns_by_epoch, np.array([[i, mean, std]]), axis=0)
