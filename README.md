@@ -90,5 +90,5 @@ gamma_g: 0.001          # needed for R3GAIL
 
 Then simply run the training script as
 ```bash
-python train --config [PATH/TO/CONFIG]
+python train.py --config [PATH/TO/CONFIG]
 ```
