@@ -766,7 +766,7 @@ class BCPolicy(nn.Module):
 
 # begin the training logic
 print(f"expert_data/{ENV_NAME}_25.pkl")
-with open(f".expert_data/{ENV_NAME}_25.pkl", 'rb') as f:
+with open(f"expert_data/{ENV_NAME}_25.pkl", 'rb') as f:
     expert_dataset = pickle.load(f)
 
 num_expert_trajs = 2
