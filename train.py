@@ -28,8 +28,16 @@ args = parser.parse_args()
 with open(args.config, "r") as f:
     cfg = yaml.safe_load(f)
 
+try:
+    WANDB_ENTITY=os.environ('WANDB_ENTITY')
+except:
+    logger.error(
+        'Please define the WANDB_ENTITY environment variable for logging.'
+    )
+    exit()
+
 wandb.init(
-    entity='peterchenyipu',
+    entity=WANDB_ENTITY,
     project="cs8803-drl-project",
     name=f'{cfg["env_name"]}_{cfg["algorithm"]}_seed_{cfg["seed"]}',
     config=cfg)
