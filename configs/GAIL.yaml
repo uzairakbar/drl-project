@@ -1,0 +1,18 @@
+seed: 0
+env_name: Ant-v5
+epochs: 1000
+gamma: 0.99
+n_envs: 64
+n_eval_envs: 64
+batch_size: 64
+hidden_dim: 64
+eval_episodes: 16
+gae_lambda: 0.95
+ppo_epsilon: 0.2
+learning_rate: 0.0004
+generator_iterations: 32
+discriminator_iterations: 1
+algorithm: GAIL  # options: R3GAIL, GAIL, BC, BC_Stochastic
+log_dir: ant_runs
+gamma_d: 0.001 # needed for R3GAIL
+gamma_g: 0.001 # needed for R3GAIL
