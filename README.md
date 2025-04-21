@@ -9,12 +9,13 @@
 | Ziwon Yoon  | 903934417  | zyoon6@gatech.edu      |
 
 ## Artifacts
+The following results were generated for the `HalfCheetah-v5` environment.
 
-https://github.com/user-attachments/assets/23c254a8-a54d-428d-9b27-b3d871db6589
+https://github.com/user-attachments/assets/74f2d498-17ec-4419-ba41-fb55114b6131
 
-| Reward graph during training    | Evaluaiton against baselines    |
-| :---------------------: | :------------------------------------: |
-| ![State Representation](artifacts/learning.png) | ![Linear Value Function Approximation](artifacts/baseline_comparison.png) |
+| GAIL training returns    | GAIL Evaluaiton vs. Baselines    | R3GAIL Evaluation vs. GAIL |
+| :---------------------: | :------------------------------------: | :---------------------: |
+| ![GAIL Training](artifacts/gail_training.png) | ![GAIL Evaluatin](artifacts/gail_evaluation.png) | ![R3GAIL Evaluation](artifacts/r3gail_evaluation.png) |
 
 ## Setup
 Clone this repository.
@@ -38,11 +39,9 @@ Then download expert data with the following.
 dataset_path='https://github.com/Div99/IQ-Learn/blob/main/iq_learn/experts/HalfCheetah-v2_25.pkl?raw=true'
 wget "$dataset_path" -O HalfCheetah-v2_25.pkl
 ```
+Or simply use any of the provided datasets under the `expert_data/` directory.
 
 ### Environment
-#### Google colab (recommended)
-You can also simply try our notebook on [google colab](https://colab.research.google.com/drive/19Qi_-Uzw4efC5ORLATTzGSYd_8hTI2jI?usp=sharing).
-
 #### Conda environment
 Install dependencies with `conda`.
 ```bash
@@ -50,20 +49,46 @@ conda env create -f environment.yaml
 conda activate gail
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
-Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as the environment `gail`.
 
 #### Python `venv`
-Setup the python virtual environemnt (requires python `3.10.14`).
+Setup the python virtual environemnt (requires python `3.10` and above).
 ```bash
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
-Then run the jupyter notebook `gail.ipynb` by setting the kernel/interpreter as this environment.
 
-### Tensorboard
-Launch tensorboard as follows.
+### Logging
+Please define the `WANDB_ENTITY` environment variable according to your [Weights and Biases](https://wandb.ai/site/) account.
 ```bash
-tensorboard --logdir runs
+export WANDB_ENTITY='[YOUR_W&B_ENTITY]'
+```
+
+### Usage
+Pick one of the given configurations under `configs/` directory. Or specify your desired custom training/evaluation configuration as follows
+```yaml
+seed: 0
+env_name: HalfCheetah-v5
+epochs: 1000
+gamma: 0.99
+n_envs: 64               # NOTE: following 3 fields must be same
+n_eval_envs: 64
+batch_size: 64
+hidden_dim: 64
+eval_episodes: 16
+gae_lambda: 0.95
+ppo_epsilon: 0.2
+learning_rate: 0.0004
+generator_iterations: 32
+discriminator_iterations: 1
+algorithm: R3GAIL       # Options: R3GAIL, BC, BC_Stochastic
+log_dir: ant_runs
+gamma_d: 0.001          # needed for R3GAIL
+gamma_g: 0.001          # needed for R3GAIL
+```
+
+Then simply run the training script as
+```bash
+python train --config [PATH/TO/CONFIG]
 ```
